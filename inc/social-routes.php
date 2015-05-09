@@ -35,7 +35,6 @@ class api_routes_social {
 	}
 	
 	function cc_login( $data ) {
-		global $CC_STRIPE;
 		
 		if( !isset( $data['email'] ) ) {
 			return new WP_Error( 'No Email', __( 'No Email Set' ), array( 'status' => 401 ) );
@@ -53,19 +52,6 @@ class api_routes_social {
 			wp_set_current_user( $user_id, $user->user_login );
 			wp_set_auth_cookie( $user_id );
 			do_action( 'wp_login', $user->user_login, $user );
-			
-			if( !get_user_meta( $user_id, 'stripe_cus', true ) || !get_user_meta( $user_id, 'stripe_rec', true ) ) {
-				$return['stripe_new'] = true;
-				$stripe = wp_remote_post( get_bloginfo( 'wpurl' ).'/wp-json/stripe/'.$user_id );
-				$return['stripe'] = json_decode( $stripe['body'] );
-			} else {
-				$return['stripe_new'] = false;
-				$return['stripe'] = array( 
-					'cus' => get_user_meta( $user_id, 
-					'stripe_cus', true ), 
-					'rec' => get_user_meta( $user_id, 'stripe_rec', true ) 
-				);
-			}
 			
 			$return['user'] = $user;
 			$return['user_id'] = $user_id;
@@ -94,8 +80,6 @@ class api_routes_social {
 			$return['user_id'] = $user_id;
 			$return['user'] = $user;
 			$return['new_user'] = true;
-			
-			$return['stripe'] = $CC_STRIPE->create_stripe_info( $user_id, 'ceate' );
 			
 			wp_set_current_user( $user_id, $user->user_login );
 			wp_set_auth_cookie( $user_id );
