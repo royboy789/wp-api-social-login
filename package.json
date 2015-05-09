@@ -1,0 +1,30 @@
+{
+  "name": "wp-api-social-builder",
+  "version": "1.0.0",
+  "description": "WPAPI SOCIAL LOGIN",
+  "main": "index.js",
+  "dependencies": {
+    "gulp-install": "^0.4.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-minify-css": "^1.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-watch": "^4.2.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/royboy789/wp-api-social-login.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/royboy789/wp-api-social-login/issues"
+  },
+  "homepage": "https://github.com/royboy789/wp-api-social-login"
+}
