@@ -10,7 +10,7 @@ function facebook_connect(){
 			console.log( 'Facebook json.id: ' + json.id );
 		});
 	},function(e){
-		console.log(e);
+		console.log(e.error_message);
 	});	
 }
 
@@ -21,9 +21,10 @@ function twitter_connect(){
 		console.log('logged in to Twitter');
 		hello("twitter").api("me").then(function(json){
 			console.log( json );
+			console.log( 'Twitter json.id: ' + json.id );
 		});
 	},function(e){
-		console.log(e);
+		console.log(e.error_message);
 	});	
 }
 
@@ -37,7 +38,7 @@ function github_connect(){
 			console.log( 'GitHub json.id: ' + json.id );
 		});
 	},function(e){
-		console.log(e);
+		console.log(e.error_message);
 	});	
 }
 
@@ -46,7 +47,7 @@ $(document).ready(function(){
 	
 	hello.init({
 		facebook: "907221609321148",
-		twitter: "5GRbsejpkoenSXnFRxu93CqVH",
+		twitter: "Eb00uOj83F8khODD3lI8eqgWF",
 		github: "490074a2ebeecd8ff906",
 		google: "870684892978-c1mguuas1d6s0lpde78t17v6fusivfl9@developer.gserviceaccount.com"
 	}, {
