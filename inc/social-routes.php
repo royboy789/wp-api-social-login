@@ -7,24 +7,53 @@ class api_routes_social {
 	}
 
 	public function register_routes( $routes ) {
-		$routes['/cc_user_check'] = array(
-			array( array( $this, 'cc_user_check'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
+		$routes['/social_login'] = array(
+			array( array( $this, '__social_login'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
 		);
-		$routes['/cc_user_login'] = array(
-			array( array( $this, 'cc_login'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
+		$routes['/social_registration'] = array(
+			array( array( $this, '__social_registration'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
 		);
 		
 		return $routes;
 	}
 	
-	public function cc_user_check( $data ) {
-		$return = array('user' => false)
+	public function __social_login( $data ) {
+		// Expects social_id or user_email
 		
-		if( isset( $data['email'] ) ) { 
-			$return['user'] = email_exists( $data['email'] );
-		}
+		$return = $data;		
 		
 		return $this->create_response( $return );
+	}
+	
+	public function __social_registration( $data ) {
+		// Expects social_id, user_email, and other user_info per WP USER OBJECT
+		
+		$return = $data;
+		
+		return $this->create_response( $return );
+	}
+	
+	
+	private function __user_exists_check( $social_id, $user_email ) {
+		// check if user exists in WP or DB
+		$return = array('user' => false );
+		
+		if( isset( $user_email ) ) { 
+			$return['user'] = email_exists( $user_email );
+		} elseif( isset( $social_id ) ) {
+			$db_user = $this->__user_db_check( $social_id );
+			$return['user'] = get_user_by( 'id', $db_user );
+		} else {
+			new WP_Error( 'No Data', __( 'Expecting social_id or user_email' ), array( 'status' => 400 ) );
+		}
+		
+		return $return;
+		
+	}
+	
+	private function __user_db_check( $social_id ) {
+		// Check wp_social_api table for user
+		
 	}
 	
 	public function cc_login( $data ) {

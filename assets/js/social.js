@@ -1,13 +1,12 @@
 var $ = jQuery;
-
+var url = socialLogin.api_url;
 
 /** FACEBOOK **/
 function facebook_connect(){
 	hello("facebook").login().then( function() {
 		console.log('logged in to Facebook');
 		hello("facebook").api("me").then(function(json){
-			console.log( json );
-			console.log( 'Facebook json.id: ' + json.id );
+			social_login( json );
 		});
 	},function(e){
 		console.log(e.error_message);
@@ -20,8 +19,7 @@ function twitter_connect(){
 	hello("twitter").login().then( function() {
 		console.log('logged in to Twitter');
 		hello("twitter").api("me").then(function(json){
-			console.log( json );
-			console.log( 'Twitter json.id: ' + json.id );
+			social_login( json );
 		});
 	},function(e){
 		console.log(e.error_message);
@@ -34,14 +32,30 @@ function github_connect(){
 	hello("github").login().then( function() {
 		console.log('logged in to Twitter');
 		hello("github").api("me").then(function(json){
-			console.log( json );
-			console.log( 'GitHub json.id: ' + json.id );
+			social_login( json );
 		});
 	},function(e){
 		console.log(e.error_message);
 	});	
 }
 
+
+/** SOCIAL LOGIN **/
+
+function social_login( json ) {
+	
+	var data = {
+		social_id: json.id
+	}
+	if( json.email ) {
+		data.user_email = json.email
+	}
+	
+	$.post( url + '/social_login', data, function(res){
+		console.log( res );
+	})
+	
+}
 
 $(document).ready(function(){
 	
