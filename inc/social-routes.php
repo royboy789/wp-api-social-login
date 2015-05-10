@@ -20,7 +20,7 @@ class api_routes_social {
 	public function __social_login( $data ) {
 		// Expects social_id or user_email
 		
-		$return = $data;		
+		$return = $this->__user_exists_check( $data );	
 		
 		return $this->create_response( $return );
 	}
@@ -34,17 +34,21 @@ class api_routes_social {
 	}
 	
 	
-	private function __user_exists_check( $social_id, $user_email ) {
+	private function __user_exists_check( $data ) {
 		// check if user exists in WP or DB
 		$return = array('user' => false );
 		
-		if( isset( $user_email ) ) { 
-			$return['user'] = email_exists( $user_email );
-		} elseif( isset( $social_id ) ) {
-			$db_user = $this->__user_db_check( $social_id );
-			$return['user'] = get_user_by( 'id', $db_user );
-		} else {
-			new WP_Error( 'No Data', __( 'Expecting social_id or user_email' ), array( 'status' => 400 ) );
+		if( isset( $data['user_email'] ) ) { 
+			$return['user'] = email_exists( $data['user_email'] );
+		} 
+		
+		if( isset( $data['social_id'] ) && $return['user'] == false ) {
+			$db_user = $this->__user_db_check( $data['social_id'] );
+			$return['user'] = get_user_by( 'id', $db_user->wp_user_id );
+		} 
+		
+		if( !isset( $data['social_id'] ) && !isset( $data['user_email'] ) ) {
+			return new WP_Error( 'No Data', __( 'Expecting social_id or user_email' ), array( 'status' => 400 ) );
 		}
 		
 		return $return;
@@ -53,6 +57,15 @@ class api_routes_social {
 	
 	private function __user_db_check( $social_id ) {
 		// Check wp_social_api table for user
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wp_api_social';
+		
+		$db_user_row = $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM $table_name WHERE social_id = %s ", 
+			$social_id 
+		));
+
+		return $db_user_row;
 		
 	}
 	

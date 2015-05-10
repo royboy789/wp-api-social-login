@@ -15,7 +15,7 @@ __Data Paramenters__
 * `user_email` from API or injected by user - _optional_
   
   
-`/social_registration` - us this to register and login a new user. 
+`/social_registration` - us this to register and login a new user.  
 __Data Parameneters__  
 * `social_id` from API - __required__
 * `user_email` from API or user - __required__

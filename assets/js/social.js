@@ -30,7 +30,7 @@ function twitter_connect(){
 /** GITHUB **/
 function github_connect(){
 	hello("github").login().then( function() {
-		console.log('logged in to Twitter');
+		console.log('logged in to GitHub');
 		hello("github").api("me").then(function(json){
 			social_login( json );
 		});
@@ -47,9 +47,9 @@ function social_login( json ) {
 	var data = {
 		social_id: json.id
 	}
-	if( json.email ) {
-		data.user_email = json.email
-	}
+	//if( json.email ) {
+	//	data.user_email = json.email
+	//}
 	
 	$.post( url + '/social_login', data, function(res){
 		console.log( res );
