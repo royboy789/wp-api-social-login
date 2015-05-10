@@ -47,14 +47,25 @@ function social_login( json ) {
 	var data = {
 		social_id: json.id
 	}
-	//if( json.email ) {
-	//	data.user_email = json.email
-	//}
+	
+	if( json.email ) {
+		data.user_email = json.email
+	}
 	
 	$.post( url + '/social_login', data, function(res){
 		console.log( res );
+		if( res.ID ) {
+			redirect_user( location.href );
+		}
 	})
 	
+}
+
+
+/** REDIRECT **/
+
+function redirect_user( location ) {
+	window.location.href = location;
 }
 
 $(document).ready(function(){

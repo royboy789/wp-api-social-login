@@ -20,9 +20,17 @@ class api_routes_social {
 	public function __social_login( $data ) {
 		// Expects social_id or user_email
 		
-		$return = $this->__user_exists_check( $data );	
+		$user = $this->__user_exists_check( $data );
 		
-		return $this->create_response( $return );
+		if( !$user['user'] )
+			return new WP_Error( 'No User', __( 'Not a valid user' ), array( 'status' => 401 ) );
+		
+		$user = $user['user'];
+		wp_set_current_user( $user->ID, $user->user_login );
+		wp_set_auth_cookie( $user->ID );
+		do_action( 'wp_login', $user->user_login, $user );		
+		
+		return $this->create_response( $user );
 	}
 	
 	public function __social_registration( $data ) {
@@ -39,12 +47,17 @@ class api_routes_social {
 		$return = array('user' => false );
 		
 		if( isset( $data['user_email'] ) ) { 
-			$return['user'] = email_exists( $data['user_email'] );
+			$email_check = email_exists( $data['user_email'] );
+			if( $email_check ) {
+				$return['user'] = get_user_by( 'id', $email_check );
+			}
 		} 
 		
 		if( isset( $data['social_id'] ) && $return['user'] == false ) {
 			$db_user = $this->__user_db_check( $data['social_id'] );
-			$return['user'] = get_user_by( 'id', $db_user->wp_user_id );
+			if( $db_user ) {
+				$return['user'] = get_user_by( 'id', $db_user->wp_user_id );	
+			}
 		} 
 		
 		if( !isset( $data['social_id'] ) && !isset( $data['user_email'] ) ) {
