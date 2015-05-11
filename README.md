@@ -41,4 +41,4 @@ __Shortcode Attributes__
 * __redirect__ - `url` - redirect user after sign in or register (_default:current url_)
   
 # FULL SHORTCOE EXAMPLE #
-`[social_login nickname="true" nickname_placeholder="Custom Username" first_name="true" first_name_placeholder="First Name" last_name="true" last_name_placeholder="Last Name" submit_prefix="Register with" networks="facebook,twitter" social_action="register"]`
+`[social_login nickname="true" nickname_placeholder="Custom Username" first_name="true" first_name_placeholder="First Name" last_name="true" last_name_placeholder="Last Name" submit_prefix="Register with" networks="facebook,twitter" social_action="register" redirect="/new-page"]`
