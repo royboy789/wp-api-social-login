@@ -29,12 +29,12 @@ __Data Parameneters__
 Shortcode a form for your users -  
 `[social_login]`  
 __Shortcode Attributes__ 
-*__nickname__ - `true/false` - use this to include a nickname override field (_default: false_)
-*__nickname_place_holder__ - `string` - this will be the placeholder for the input field (_default: nickname_)
-*__first_name__  - `true/false` - use this to include a first name override field (_default: false_)
-*__first_name_placeholder__ - `string` - this will be the placeholder for the first name field (_default: First Name_)
-*__last_name__  - `true/false` - use this to include a last name override field (_default: false_)
-*__last_name_placeholder__ - `string` - this will be the placeholder for the last name field (_default: Last Name_)
-*__submit_prefix__ - `string` - string to show before social network submit buttons (_default: Login with_)
-*__networks__ - `comma seperated string` - separate with a comma all networks you want to offer (_default:facebook,twitter,github_)
+*__nickname__ - `true/false` - include nickname field (_default: false_)
+*__nickname_place_holder__ - `string` - placeholder for nickname field (_default: nickname_)
+*__first_name__  - `true/false` - first name field (_default: false_)
+*__first_name_placeholder__ - `string` - placeholder for the first name field (_default: First Name_)
+*__last_name__  - `true/false` - last name field (_default: false_)
+*__last_name_placeholder__ - `string` - placeholder for the last name field (_default: Last Name_)
+*__submit_prefix__ - `string` - for submit buttons (_default: Login with_)
+*__networks__ - `comma seperated string` - networks you want to offer (_default:facebook,twitter,github_)
 *__social_action__ - `login/register` - used to identify if this is a login form or signup form (_default:login_)
