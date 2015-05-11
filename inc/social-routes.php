@@ -34,8 +34,8 @@ class api_routes_social {
 	}
 	
 	public function __social_registration( $data ) {
-		// Expects social_id, user_email, and other user_info per WP USER OBJECT
-		
+		// Expects social_id, user_email, and other user_info per WP user data
+				
 		$user = $this->__user_exists_check( $data );
 		
 		if( $user['user'] ) {
@@ -45,7 +45,7 @@ class api_routes_social {
 		$user_id = $this->__create_user( $data );
 		
 		if( is_wp_error( $user_id ) ) {
-			return new WP_Error( 'Create Error', __( $user_id->get_error_message() ), array( 'status' => 401 ) ); 
+			return new WP_Error( 'Registration Error', __( $user_id->get_error_message() ), array( 'status' => 400 ) ); 
 		}
 		
 		$user = get_user_by( 'id', $user_id );
@@ -122,15 +122,20 @@ class api_routes_social {
 		$user_update = array( 'ID' => $user_id );
 		
 		if( isset( $data['first_name'] ) ) {
-			$user_update['user_firstname'] = $data['first_name'];
+			$user_update['first_name'] = $data['first_name'];
 		}
 		
 		if( isset( $data['last_name'] ) ) {
-			$user_update['user_lastname'] = $data['last_name'];
+			$user_update['last_name'] = $data['last_name'];
 		}
 		
 		if( isset( $data['description'] ) ) {
 			$user_update['description'] = $data['description'];
+		}
+		
+		$update_user = wp_update_user( $user_update );
+		if( is_wp_error( $update_user ) ) {
+			return new WP_Error( 'Update Error', __( $update_user->get_error_message() ), array( 'status' => 400 ) );
 		}
 		
 		$this->__create_user_db( $user_id, $data['social_id'] );
