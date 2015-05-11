@@ -32,6 +32,7 @@ __Data Parameneters__
 # SHORTCODE #
 Shortcode generates a form for your users -  
 `[social_login]`  
+  
 __Shortcode Attributes__ 
 * __nickname__ - `true/false` - include nickname field (_default: false_)
 * __nickname_place_holder__ - `string` - placeholder for nickname field (_default: nickname_)
