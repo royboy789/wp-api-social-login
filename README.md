@@ -21,5 +21,5 @@ __Data Parameneters__
 * `user_email` from API or user - __required__
 * `first_name` - _optional_
 * `last_name` - _optional_
-* `nickname` - _optional_
+* `nickname` - or WP user nicename _optional_
 * `description` - _optional_

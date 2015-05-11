@@ -133,7 +133,12 @@ class api_routes_social {
 			$user_update['description'] = $data['description'];
 		}
 		
+		if( isset( $data['nickname'] ) ) {
+			$user_update['user_nicename'] = $data['nickname'];
+		}
+		
 		$update_user = wp_update_user( $user_update );
+		
 		if( is_wp_error( $update_user ) ) {
 			return new WP_Error( 'Update Error', __( $update_user->get_error_message() ), array( 'status' => 400 ) );
 		}
