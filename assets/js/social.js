@@ -7,7 +7,7 @@ function facebook_connect( action, data ){
 		console.log('logged in to Facebook');
 		hello("facebook").api("me").then(function(json){
 			if( action == 'login' ) {
-				social_login( json );	
+				social_login( json, data );	
 			} else {
 				social_registration( json, data );
 			}
@@ -24,7 +24,7 @@ function twitter_connect( action, data ){
 		console.log('logged in to Twitter');
 		hello("twitter").api("me").then(function(json){
 			if( action == 'login' ) {
-				social_login( json );	
+				social_login( json, data );
 			} else {
 				social_registration( json, data );
 			}
@@ -41,7 +41,7 @@ function github_connect( action, data ){
 		console.log('logged in to GitHub');
 		hello("github").api("me").then(function(json){
 			if( action == 'login' ) {
-				social_login( json );	
+				social_login( json, data );	
 			} else {
 				social_registration( json, data );
 			}
@@ -54,7 +54,7 @@ function github_connect( action, data ){
 
 /** SOCIAL LOGIN **/
 
-function social_login( json ) {
+function social_login( json, form_data ) {
 	
 	var data = {
 		social_id: json.id
@@ -66,7 +66,11 @@ function social_login( json ) {
 	
 	$.post( url + '/social_login', data, function(res){
 		if( res.ID ) {
-			redirect_user( location.href );
+			if( form_data.redirect ){
+				redirect_user( form_data.redirect );
+			} else {
+				redirect_user( location.href );	
+			}
 		}
 	})
 	
@@ -87,7 +91,11 @@ function social_registration( json, form_data ) {
 	
 	$.post( url + '/social_registration', data, function(res){
 		if( res.ID ) {
-			redirect_user( location.href );
+			if( form_data.redirect ){
+				redirect_user( form_data.redirect );
+			} else {
+				redirect_user( location.href );	
+			}
 		}
 	}).fail(function(res){
 		alert( res.responseJSON[0].message );

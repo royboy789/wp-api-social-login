@@ -20,10 +20,14 @@ class social_shortcode {
 				'last_name_placeholder'	 => 'Last Name',
 				'submit_prefix'			 => 'Login with',
 				'networks' 				 => 'facebook,twitter,github',
-				'social_action'			 => 'login'
+				'social_action'			 => 'login',
+				'redirect'				 => false
 			), $atts, 'social_login' );
 		
 		$html = '<form id="social_login_form" data-social-action="'.$atts['social_action'].'">';
+			if( $atts['redirect'] ) {
+				$html .= '<input type="hidden" name="_social_login_redirect" value="'.$atts['redirect'].'" />';
+			}
 			$html .= $this->__build_form_inputs( $atts );
 			$html .= $this->__build_form_submits( $atts );
 		$html .= '</form>';
