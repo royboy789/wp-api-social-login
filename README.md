@@ -16,7 +16,8 @@ __Data Paramenters__
 * `social_id` from API - __required__
 * `user_email` from API or injected by user - _optional_
   
-## REGISTRATION ENDPOINT (__also handles login post register__)
+## REGISTRATION ENDPOINT
+__also handles login post register__  
 `/social_registration` - us this to register and login a new user.  
   
 __Data Parameneters__  
