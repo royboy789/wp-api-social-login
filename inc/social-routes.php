@@ -36,9 +36,24 @@ class api_routes_social {
 	public function __social_registration( $data ) {
 		// Expects social_id, user_email, and other user_info per WP USER OBJECT
 		
-		$return = $data;
+		$user = $this->__user_exists_check( $data );
 		
-		return $this->create_response( $return );
+		if( $user['user'] ) {
+			return $this->create_response( $this->__social_login( $data ) );
+		}
+		
+		$user_id = $this->__create_user( $data );
+		
+		if( is_wp_error( $user_id ) ) {
+			return new WP_Error( 'Create Error', __( $user_id->get_error_message() ), array( 'status' => 401 ) ); 
+		}
+		
+		$user = get_user_by( 'id', $user_id );
+		wp_set_current_user( $user->ID, $user->user_login );
+		wp_set_auth_cookie( $user->ID );
+		do_action( 'wp_login', $user->user_login, $user );
+				
+		return $this->create_response( $user );
 	}
 	
 	
@@ -82,53 +97,63 @@ class api_routes_social {
 		
 	}
 	
-	public function cc_login( $data ) {
+	public function __create_user( $data ) {
+		$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+			
+		if( isset( $data['nickname'] ) ) {
+			$username = str_replace( ' ', '_', $data['nickname'] );	
+		} else {
+			$username = 'social_'.$data['social_id'];
+		}
+		$username = strtolower( $username );
 		
-		if( !isset( $data['email'] ) ) {
-			return new WP_Error( 'No Email', __( 'No Email Set' ), array( 'status' => 401 ) );
+		if( isset( $data['user_email'] ) ) {
+			$user_email = $data['user_email'];
+		} else {
+			$user_email = $data['social_id'].'@'.$_SERVER['SERVER_NAME'];
 		}
 		
-		if( is_user_logged_in() ) { 
-			return new WP_Error( 'Logged In', __( 'Already Logged In' ), array( 'status' => 401 ) );
+		$user_id = wp_create_user( $username, $random_password, $user_email );
+		
+		if( is_wp_error( $user_id ) ) {
+			return new WP_Error( 'Create Error', __( $user_id->get_error_message() ), array( 'status' => 401 ) ); 
 		}
 		
-		$return = array('new_user' => false);
-		$user_email = $data['email'];
-		$user_id = email_exists( $user_email );
+		$user_update = array( 'ID' => $user_id );
 		
-		if ( !$user_id ) {
-			$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
-			
-			if( isset( $data['name']['username'] ) ) {
-				$username = str_replace( ' ', '_', $data['name']['username'] );	
-			} else {
-				$username = $data['name']['first_name'].$data['name']['last_name'];
-			}
-			$username = strtolower( $username );
-			$user_id = wp_create_user( $username, $random_password, $data['email'] );
-			
-			if( is_wp_error( $user_id ) ) {
-				return new WP_Error( 'Create Error', __( $user_id->get_error_message() ), array( 'status' => 401 ) ); 
-			}
-			flush_rewrite_rules( 'true' );
-			
-			if( $data['name']['first_name'] && $data['name']['last_name'] ) {
-				wp_update_user( array( 'ID' => $user_id, 'first_name' => $data['name']['first_name'], 'last_name' => $data['name']['last_name'] ) );
-			}
-			
-			$return['new_user'] = true;
+		if( isset( $data['first_name'] ) ) {
+			$user_update['user_firstname'] = $data['first_name'];
 		}
 		
-		$user = get_user_by( 'id', $user_id );
+		if( isset( $data['last_name'] ) ) {
+			$user_update['user_lastname'] = $data['last_name'];
+		}
 		
-		$return['user'] = $user;
-		$return['user_id'] = $user_id;
+		if( isset( $data['description'] ) ) {
+			$user_update['description'] = $data['description'];
+		}
 		
-		wp_set_current_user( $user_id, $user->user_login );
-		wp_set_auth_cookie( $user_id );
-		do_action( 'wp_login', $user->user_login, $user );
+		$this->__create_user_db( $user_id, $data['social_id'] );
 		
-		return $this->create_response( $return );
+		return $user_id;
+	}
+	
+	private function __create_user_db( $user_id, $social_id ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wp_api_social';
+		
+		$db = $wpdb->insert(
+			$table_name,
+			array(
+				'created_time' 	=> current_time( 'mysql' ),
+				'social_id' 	=> $social_id,
+				'wp_user_id' 	=> $user_id
+			),
+			array(
+				'%s',
+				'%d',
+				'%d'
+		));
 	}
 	
 	private function create_response( $return ) {

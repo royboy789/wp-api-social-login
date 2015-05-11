@@ -2,11 +2,15 @@ var $ = jQuery;
 var url = socialLogin.api_url;
 
 /** FACEBOOK **/
-function facebook_connect(){
+function facebook_connect( action ){
 	hello("facebook").login().then( function() {
 		console.log('logged in to Facebook');
 		hello("facebook").api("me").then(function(json){
-			social_login( json );
+			if( action == 'login' ) {
+				social_login( json );	
+			} else {
+				social_registration( json );
+			}
 		});
 	},function(e){
 		console.log(e.error_message);
@@ -15,11 +19,15 @@ function facebook_connect(){
 
 
 /** TWITTER **/
-function twitter_connect(){
+function twitter_connect( action ){
 	hello("twitter").login().then( function() {
 		console.log('logged in to Twitter');
 		hello("twitter").api("me").then(function(json){
-			social_login( json );
+			if( action == 'login' ) {
+				social_login( json );	
+			} else {
+				social_registration( json );
+			}
 		});
 	},function(e){
 		console.log(e.error_message);
@@ -28,11 +36,15 @@ function twitter_connect(){
 
 
 /** GITHUB **/
-function github_connect(){
+function github_connect( action ){
 	hello("github").login().then( function() {
 		console.log('logged in to GitHub');
 		hello("github").api("me").then(function(json){
-			social_login( json );
+			if( action == 'login' ) {
+				social_login( json );	
+			} else {
+				social_registration( json );
+			}
 		});
 	},function(e){
 		console.log(e.error_message);
@@ -61,6 +73,27 @@ function social_login( json ) {
 	
 }
 
+/** SOCIAL REGISTRATION **/
+
+function social_registration( json ) {
+	
+	var data = {
+		social_id: json.id
+	}
+	
+	if( json.email ) {
+		data.user_email = json.email
+	}
+	
+	$.post( url + '/social_registration', data, function(res){
+		console.log( res );
+		if( res.ID ) {
+			redirect_user( location.href );
+		}
+	})
+	
+}
+
 
 /** REDIRECT **/
 
@@ -81,17 +114,32 @@ $(document).ready(function(){
 	
 	$('body').on('click', '.facebook-login', function(e){
 		e.preventDefault();
-		facebook_connect();		
+		facebook_connect( 'login' );		
 	});
 	
 	$('body').on('click', '.twitter-login', function(e){
 		e.preventDefault();
-		twitter_connect();		
+		twitter_connect( 'login' );		
 	});
 	
 	$('body').on('click', '.github-login', function(e){
 		e.preventDefault();
-		github_connect();		
+		github_connect( 'login' );		
+	});
+	
+	$('body').on('click', '.facebook-register', function(e){
+		e.preventDefault();
+		facebook_connect( 'register' );		
+	});
+	
+	$('body').on('click', '.twitter-register', function(e){
+		e.preventDefault();
+		twitter_connect( 'register' );		
+	});
+	
+	$('body').on('click', '.github-register', function(e){
+		e.preventDefault();
+		github_connect( 'register' );		
 	});
 			
 	
