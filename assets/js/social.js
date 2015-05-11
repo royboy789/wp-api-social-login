@@ -2,14 +2,14 @@ var $ = jQuery;
 var url = socialLogin.api_url;
 
 /** FACEBOOK **/
-function facebook_connect( action ){
+function facebook_connect( action, data ){
 	hello("facebook").login().then( function() {
 		console.log('logged in to Facebook');
 		hello("facebook").api("me").then(function(json){
 			if( action == 'login' ) {
 				social_login( json );	
 			} else {
-				social_registration( json );
+				social_registration( json, data );
 			}
 		});
 	},function(e){
@@ -19,14 +19,14 @@ function facebook_connect( action ){
 
 
 /** TWITTER **/
-function twitter_connect( action ){
+function twitter_connect( action, data ){
 	hello("twitter").login().then( function() {
 		console.log('logged in to Twitter');
 		hello("twitter").api("me").then(function(json){
 			if( action == 'login' ) {
 				social_login( json );	
 			} else {
-				social_registration( json );
+				social_registration( json, data );
 			}
 		});
 	},function(e){
@@ -36,14 +36,14 @@ function twitter_connect( action ){
 
 
 /** GITHUB **/
-function github_connect( action ){
+function github_connect( action, data ){
 	hello("github").login().then( function() {
 		console.log('logged in to GitHub');
 		hello("github").api("me").then(function(json){
 			if( action == 'login' ) {
 				social_login( json );	
 			} else {
-				social_registration( json );
+				social_registration( json, data );
 			}
 		});
 	},function(e){
@@ -65,7 +65,6 @@ function social_login( json ) {
 	}
 	
 	$.post( url + '/social_login', data, function(res){
-		console.log( res );
 		if( res.ID ) {
 			redirect_user( location.href );
 		}
@@ -75,19 +74,24 @@ function social_login( json ) {
 
 /** SOCIAL REGISTRATION **/
 
-function social_registration( json ) {
+function social_registration( json, form_data ) {
 	
 	var data = { social_id: json.id }
 	
 	if( json.email ) { data.user_email = json.email }
 	if( json.first_name ) { data.first_name = json.first_name }
+	if( form_data.first_name ) { data.first_name = form_data.first_name }
 	if( json.last_name ) { data.last_name = json.last_name }
+	if( form_data.last_name ) { data.last_name = form_data.last_name }
+	if( form_data.nickname ) { data.nickname = form_data.nickname }
 	
 	$.post( url + '/social_registration', data, function(res){
 		if( res.ID ) {
 			redirect_user( location.href );
 		}
-	})
+	}).fail(function(res){
+		alert( res.responseJSON[0].message );
+	});
 	
 }
 

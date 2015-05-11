@@ -18,6 +18,7 @@ define( 'API_SOCIAL_FILE',  __FILE__ );
 require 'inc/social-db-init.php';
 require 'inc/social-routes.php'; 
 require 'inc/social-enqueue.php';
+require 'inc/social-shortcode.php';
 global $wpdb;
 
 class wp_api_social_login {
@@ -35,6 +36,10 @@ class wp_api_social_login {
 		/** SOCIAL ROUTES **/
 		$social_routes = new api_routes_social();
 		$social_routes->__init();
+		
+		/** SHORTCODE **/
+		$social_shortcode = new social_shortcode();
+		$social_shortcode->__init();
 		 
 	}
 	 
