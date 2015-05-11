@@ -38,3 +38,5 @@ __Shortcode Attributes__
 * __submit_prefix__ - `string` - for submit buttons (_default: Login with_)
 * __networks__ - `comma seperated string` - networks you want to offer (_default:facebook,twitter,github_)
 * __social_action__ - `login/register` - used to identify if this is a login form or signup form (_default:login_)
+  
+`[social_login nickname="true" nickname_placeholder="Custom Username" first_name="true" first_name_placeholder="First Name" last_name="true" last_name_placeholder="Last Name" submit_prefix="Register with" networks="facebook,twitter" social_action="register"]`
