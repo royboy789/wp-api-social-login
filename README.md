@@ -9,13 +9,14 @@ Creation of 2 endpoints for __WP-API__  each accepts a data object array, make s
   
 `var data = { user_id: XXXXXXX, user_email: XXXX@YYY.com }`  
   
+## LOGIN ENDPOINT
 `/social_login` - use this to login an existing user, will do a check if user exists and return WP Error if no user found or insufficient data  
   
 __Data Paramenters__  
 * `social_id` from API - __required__
 * `user_email` from API or injected by user - _optional_
   
-  
+## REGISTRATION ENDPOINT (__also handles login post register__)
 `/social_registration` - us this to register and login a new user.  
   
 __Data Parameneters__  
@@ -28,7 +29,7 @@ __Data Parameneters__
   
   
 # SHORTCODE #
-Shortcode a form for your users -  
+Shortcode generates a form for your users -  
 `[social_login]`  
 __Shortcode Attributes__ 
 * __nickname__ - `true/false` - include nickname field (_default: false_)
