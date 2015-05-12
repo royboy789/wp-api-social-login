@@ -113,10 +113,9 @@ function redirect_user( location ) {
 $(document).ready(function(){
 	
 	hello.init({
-		facebook: "907221609321148",
-		twitter: "Eb00uOj83F8khODD3lI8eqgWF",
-		github: "490074a2ebeecd8ff906",
-		google: "870684892978-c1mguuas1d6s0lpde78t17v6fusivfl9@developer.gserviceaccount.com"
+		facebook: socialLogin.facebook,
+		twitter: socialLogin.twitter,
+		github: socialLogin.github
 	}, {
 		scope: 'email'
 	});

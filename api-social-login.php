@@ -5,6 +5,7 @@
  * Description: Using WP-API and Hello.js allow for seamless user registration and logging in via social networks
  * Version: 1.0
  * Author: Roy Sivan
+ * Text Domain:		wpapi_social_login
  * Author URI: http://www.roysivan.com
  * License: GPL2
 */
@@ -19,6 +20,8 @@ require 'inc/social-db-init.php';
 require 'inc/social-routes.php'; 
 require 'inc/social-enqueue.php';
 require 'inc/social-shortcode.php';
+require 'inc/social-admin.php';
+
 global $wpdb;
 
 class wp_api_social_login {
@@ -40,6 +43,10 @@ class wp_api_social_login {
 		/** SHORTCODE **/
 		$social_shortcode = new social_shortcode();
 		$social_shortcode->__init();
+		
+		/** ADMIN **/
+		$social_admin = new social_admin();
+		$social_admin->__init();
 		 
 	}
 	 
