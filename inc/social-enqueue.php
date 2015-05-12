@@ -7,9 +7,16 @@ class social_enqueue {
 	}
 	
 	function __social_scripts_enqueue() {
-
-		wp_enqueue_script( 'hello-js', API_SOCIAL_URL.'/assets/js/hello.all.js', array( 'jquery' ), API_SOCIAL_LOGIN_VERSION, false );
-		wp_enqueue_script( 'social-js', API_SOCIAL_URL.'/assets/js/social.js', array( 'hello-js' ), API_SOCIAL_LOGIN_VERSION, false );
+		$dev = false;
+		
+		if( $dev ) {
+			wp_enqueue_script( 'hello-js', API_SOCIAL_URL.'/assets/js/hello.all.js', array( 'jquery' ), API_SOCIAL_LOGIN_VERSION, false );
+			wp_enqueue_script( 'social-js', API_SOCIAL_URL.'/assets/js/social.js', array( 'hello-js' ), API_SOCIAL_LOGIN_VERSION, false );	
+		} else {
+			wp_enqueue_script( 'hello-js', API_SOCIAL_URL.'/build/js/hello.all.min.js', array( 'jquery' ), API_SOCIAL_LOGIN_VERSION, false );
+			wp_enqueue_script( 'social-js', API_SOCIAL_URL.'/build/js/social.min.js', array( 'hello-js' ), API_SOCIAL_LOGIN_VERSION, false );
+		}
+		
 		
 		$app_data = array(
 			'api_url' => json_url()

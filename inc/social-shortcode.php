@@ -74,7 +74,7 @@ class social_shortcode {
 	}
 	
 	function __social_scripts() {
-		wp_register_script( 'social_form_js', API_SOCIAL_URL.'/assets/js/social_form.js', array( 'social-js' ), API_SOCIAL_LOGIN_VERSION, true );
+		wp_register_script( 'social_form_js', API_SOCIAL_URL.'/build/js/social_form.min.js', array( 'social-js' ), API_SOCIAL_LOGIN_VERSION, true );
 	}
 	
 	function _social_print_scripts() {
