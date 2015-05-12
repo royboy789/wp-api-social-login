@@ -3,6 +3,8 @@ We can do many awesome things with WP-API, when building [CodeCavalry](https://c
   
 This is v2 of our routes and plugin that includes a new table since some social API's don't respond with information you need to check if a user exists or create a user.
   
+Supports [GitHub Updater](https://github.com/afragen/github-updater)
+  
 # API SETUP #
 You will need to go to Settings > Social API to configure the API's you want to use. As of now we are only supporting _Facbeook_, _Twitter_, and _GitHub_.  
   

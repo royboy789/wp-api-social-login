@@ -3,11 +3,13 @@
  * Plugin Name: WP-API SOCIAL LOGIN
  * Plugin URI: https://github.com/royboy789/wp-api-social-login
  * Description: Using WP-API and Hello.js allow for seamless user registration and logging in via social networks. Issues handled through GitHub - https://github.com/royboy789/wp-api-social-login
- * Version: 1.0
+ * Version: 1.1
  * Author: Roy Sivan, Carl Alexander
  * Text Domain:		wpapi_social_login
  * Author URI: https://github.com/royboy789/wp-api-social-login
  * License: GPL2
+ * GitHub Plugin URI: https://github.com/royboy789/wp-api-social-login
+ * GitHub Branch: master
 */
  
 define( 'API_SOCIAL_LOGIN_VERSION', '1.0' );
