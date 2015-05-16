@@ -4,6 +4,7 @@ class api_routes_social {
 	
 	public function __init() {
 		add_filter( 'json_endpoints', array( $this, 'register_routes' ) );
+		add_action( 'delete_user', array( $this, '__user_delete' ) );
 	}
 
 	public function register_routes( $routes ) {
@@ -64,6 +65,10 @@ class api_routes_social {
 		if( isset( $data['user_email'] ) ) { 
 			$email_check = email_exists( $data['user_email'] );
 			if( $email_check ) {
+				$db_user = $this->__user_db_check( $data['social_id'] );
+				if( !$db_user ) {
+					$this->__create_user_db( $email_check, $data['social_id'] );	
+				}				
 				$return['user'] = get_user_by( 'id', $email_check );
 			}
 		} 
@@ -164,6 +169,21 @@ class api_routes_social {
 				'%d',
 				'%d'
 		));
+	}
+	
+	public function __user_delete( $user_id ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wp_api_social';
+		
+		$db = $wpdb->delete(
+			$table_name,
+			array(
+				'wp_user_id' 	=> $user_id
+			),
+			array(
+				'%d',
+		));
+		
 	}
 	
 	private function create_response( $return ) {
