@@ -64,7 +64,7 @@ function social_login( json, form_data ) {
 		data.user_email = json.email
 	}
 	
-	$.post( url + '/social_login', data, function(res){
+	$.post( url + '/login', data, function(res){
 		if( res.ID ) {
 			if( form_data.redirect ){
 				redirect_user( form_data.redirect );
@@ -89,7 +89,7 @@ function social_registration( json, form_data ) {
 	if( form_data.last_name ) { data.last_name = form_data.last_name }
 	if( form_data.nickname ) { data.nickname = form_data.nickname }
 	
-	$.post( url + '/social_registration', data, function(res){
+	$.post( url + '/new', data, function(res){
 		if( res.ID ) {
 			if( form_data.redirect ){
 				redirect_user( form_data.redirect );

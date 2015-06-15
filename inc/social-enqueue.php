@@ -23,7 +23,7 @@ class social_enqueue {
 		);
 		
 		if( function_exists( 'rest_get_url_prefix' ) ) {
-			$app_data['api_url'] = get_bloginfo( 'wpurl') . '/' . rest_get_url_prefix() . '/wp/v2';
+			$app_data['api_url'] = get_bloginfo( 'wpurl') . '/' . rest_get_url_prefix() . '/social_login';
 		}
 		
 		if( function_exists( 'json_url' ) ) {

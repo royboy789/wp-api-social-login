@@ -11,15 +11,6 @@ class WP_REST_Social extends WP_REST_Controller {
 
 	public function register_routes() {
 		
-/*
-		$routes['/social_login'] = array(
-			array( array( $this, '__social_login'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
-		);
-		$routes['/social_registration'] = array(
-			array( array( $this, '__social_registration'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
-		);
-*/
-		
 		register_rest_route( 'social_login', '/', array(
 			
 			'methods'  => WP_REST_Server::READABLE,
@@ -47,7 +38,7 @@ class WP_REST_Social extends WP_REST_Controller {
 		
 		$return = array( 'test' => 'testing' );
 		
-		return $this->create_response( $user );
+		return $this->create_response( $return );
 	}
 	
 	public function __social_login( $data ) {
@@ -219,8 +210,7 @@ class WP_REST_Social extends WP_REST_Controller {
 	}
 	
 	private function create_response( $return ) {
-		$response = new WP_JSON_Response();
-		$response->set_data( $return );
+		$response = rest_ensure_response( $return );
 		return $response;
 	}
 }
