@@ -39,8 +39,9 @@ class wp_api_social_login {
 		$social_enqueue->__init();
 		
 		/** SOCIAL ROUTES **/
-		$social_routes = new api_routes_social();
+		$social_routes = new WP_REST_Social();
 		$social_routes->__init();
+		
 		
 		/** SHORTCODE **/
 		$social_shortcode = new social_shortcode();
@@ -54,7 +55,25 @@ class wp_api_social_login {
 	 
 }
 
-$SocialLogin = new wp_api_social_login();
-$SocialLogin->__init();
+/** JSON REST API CHECK **/
+function api_social_dep() {
+    if ( ! defined( 'REST_API_VERSION' ) ) {
+        function wpsd_admin_notice() {
+            printf( '<div class="error"><p>%s</p></div>', __( 'Activate the WP REST API plugin.  It
+            is required.' ) );
+        }
+        add_action( 'admin_notices', 'social_wpapi_error' );
+    } else {
+	    $SocialLogin = new wp_api_social_login();
+	    $SocialLogin->__init();
+    }
+}
+
+function social_wpapi_error(){
+	echo '<div class="error"><p><strong>JSON REST API</strong> must be installed and activated for the <strong>AngularJS for WP</strong> plugin to work properly - <a href="https://wordpress.org/plugins/json-rest-api/" target="_blank">Install Plugin</a></p></div>';
+}
+
+add_action( 'admin_init', 'api_social_dep', 99 );
+add_action( 'init', 'api_social_dep', 99 );
  
  ?>

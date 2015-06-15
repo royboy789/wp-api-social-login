@@ -1,21 +1,53 @@
 <?php
-
-class api_routes_social {
 	
-	public function __init() {
-		add_filter( 'json_endpoints', array( $this, 'register_routes' ) );
-		add_action( 'delete_user', array( $this, '__user_delete' ) );
+class WP_REST_Social extends WP_REST_Controller {
+	
+	
+	function __init() {
+		
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		
 	}
 
-	public function register_routes( $routes ) {
+	public function register_routes() {
+		
+/*
 		$routes['/social_login'] = array(
 			array( array( $this, '__social_login'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
 		);
 		$routes['/social_registration'] = array(
 			array( array( $this, '__social_registration'), WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON )
 		);
+*/
 		
-		return $routes;
+		register_rest_route( 'social_login', '/', array(
+			
+			'methods'  => WP_REST_Server::READABLE,
+			'callback' => array( $this, '__social_test' )
+			
+		) );
+		
+		register_rest_route( 'social_login', '/new', array(
+			
+			'methods'	=> WP_REST_Server::CREATABLE,
+			'callback'  => array( $this, '__social_registration' )
+			
+		) );
+		
+		register_rest_route( 'social_login', '/login', array(
+			
+			'methods'	=> WP_REST_Server::CREATABLE,
+			'callback'  => array( $this, '__social_login' )
+			
+		) );
+		
+	}
+	
+	public function __social_test() {
+		
+		$return = array( 'test' => 'testing' );
+		
+		return $this->create_response( $user );
 	}
 	
 	public function __social_login( $data ) {

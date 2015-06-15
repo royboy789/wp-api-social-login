@@ -19,8 +19,16 @@ class social_enqueue {
 		
 		
 		$app_data = array(
-			'api_url' => json_url()
+			'api_url' => ''
 		);
+		
+		if( function_exists( 'rest_get_url_prefix' ) ) {
+			$app_data['api_url'] = get_bloginfo( 'wpurl') . '/' . rest_get_url_prefix() . '/wp/v2';
+		}
+		
+		if( function_exists( 'json_url' ) ) {
+			$app_data['api_url'] = json_url();
+		}
 		
 		$social_app = $this->__get_social_apps();
 		foreach( $social_app as $key => $value ) {
