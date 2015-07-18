@@ -55,7 +55,6 @@ function github_connect( action, data ){
 /** SOCIAL LOGIN **/
 
 function social_login( json, form_data ) {
-	
 	var data = {
 		social_id: json.id
 	}
@@ -66,7 +65,7 @@ function social_login( json, form_data ) {
 	
 	$.post( url + '/social_login', data, function(res){
 		if( res.ID ) {
-			if( form_data.redirect ){
+			if( form_data && form_data.redirect ){
 				redirect_user( form_data.redirect );
 			} else {
 				redirect_user( location.href );	
@@ -91,7 +90,7 @@ function social_registration( json, form_data ) {
 	
 	$.post( url + '/social_registration', data, function(res){
 		if( res.ID ) {
-			if( form_data.redirect ){
+			if( form_data && form_data.redirect ){
 				redirect_user( form_data.redirect );
 			} else {
 				redirect_user( location.href );	

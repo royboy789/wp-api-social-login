@@ -18,14 +18,12 @@ class social_enqueue {
 		}
 
 		$app_data = array(
-			'api_url' => get_bloginfo( 'wpurl') . '/wp-json';
+			'api_url' => get_bloginfo( 'wpurl') . '/wp-json'
 		);
 		
 		if( function_exists( 'rest_get_url_prefix' ) ) {
 			$app_data['api_url'] = get_bloginfo( 'wpurl') . '/' . rest_get_url_prefix() . '/social_login';
-		}
-		
-		if( function_exists( 'json_url' ) ) {
+		} elseif( function_exists( 'json_url' ) ) {
 			$app_data['api_url'] = json_url();
 		}
 
